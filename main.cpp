@@ -55,14 +55,53 @@ int main() {
     srand(time(0));
 
     vector<Movie> movies;
+    string fileComment;
 
     ifstream inputFile("reviews.txt");
 
+    // file opening validation
+    if (!inputFile)
+    {
+        cerr << "Error opening file" << endl;
+        return 1;
+    }
+
+    // create movie objects
+    movies.push_back(Movie("Inception"));
+    movies.push_back(Movie("Dunkirk"));
+    movies.push_back(Movie("Interstellar"));
+    movies.push_back(Movie("The Prestige"));
+
+
+    // loop through each movie and assign 3 random reviews
+    for (Movie& movie : movies)
+    {
+        // loops 3 times
+        for (int i = 0; i < 3; i++)
+        {
+            if (getline(inputFile, fileComment))
+            {
+                float rating = 1.0 + static_cast<float>(rand()) / (RAND_MAX / 4.0); // random rating
+                movie.addReview(rating, fileComment);
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    // close the file
+    inputFile.close();
 
 
 
 
-    
+
+
+
+
+
     int userChoice;
     char anotherReview;
 
