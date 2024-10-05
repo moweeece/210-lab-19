@@ -38,7 +38,7 @@ class Movie
 {
     private:
     string title;
-    LinkedList reivews;
+    LinkedList reviews;
 
     public:
     // constructor
@@ -94,51 +94,11 @@ int main() {
     // close the file
     inputFile.close();
 
-
-
-
-
-
-
-
-
-    int userChoice;
-    char anotherReview;
-
-    // getting user inputs
-    cout << "Which linked list method should we use" << endl;
-    cout << "\t [1] New nodes are added at the head of the linked list" << endl;
-    cout << "\t [2] New nodes are added at the tail of the linked list" << endl;
-    cout << "Choice: ";
-    cin >> userChoice;
-
-    // do while loop for inputting while user says Y or y
-    do {
-        float rating;
-        string comment;
-
-        cout << "Enter review rating 0-5: ";
-        cin >> rating;
-        cin.ignore();
-        cout << "Enter review comment: ";
-        getline (cin, comment);
-
-        // add node to head or tail depending on user input
-        if (userChoice == 1)
-        {
-            reviewsList.addNodeToHead(rating, comment);
-        }
-        else if (userChoice == 2)
-        {
-            reviewsList.addNodeToTail(rating, comment);
-        }
-
-        cout << "Enter another review? Y/N: ";
-        cin >> anotherReview;
-    } while (anotherReview == 'Y' || anotherReview == 'y');
-
-    cout << "Outputting all reviews: " << endl;
-    reviewsList.display();
+    // display movie reviews
+    for (const Movie& movie : movies)
+    {
+        movie.display();
+    }
 
     return 0;
 }
@@ -146,8 +106,10 @@ int main() {
 
 // function definitions
 
-// constructor
+// constructors
 LinkedList::LinkedList() : head(nullptr) {}
+
+Movie::Movie(const string& movieTitle) : title(movieTitle) {}
 
 // function to add node to the front of the linked list
 void LinkedList::addNodeToHead(float userRating, const string& userComment)
@@ -165,39 +127,8 @@ void LinkedList::addNodeToHead(float userRating, const string& userComment)
     head = newNode;
 }
 
-// function to add node to the tail of the linked list
-void LinkedList::addNodeToTail(float userRating, const string& userComment)
-{
-    // create a new memory allocation for the new node
-    Node *newNode = new Node;
-    newNode->next = nullptr;
-
-    // set newNodes values
-    newNode->rating = userRating;
-    newNode->comment = userComment;
-
-    // if the list is empty
-    if (!head)
-    {
-        head = newNode;
-    }
-    else
-    {
-        Node *current = head;
-        // while the next pointer is not pointing at nullpointer
-        // move pointer to next node
-        while (current->next != nullptr)
-        {
-            current = current->next;
-        }
-        current->next = newNode;
-    }
-
-}
-
-
 // function to display the reviews and an average
-void LinkedList::display()
+void LinkedList::display() const
 {
 
     Node *temp = head;
@@ -232,3 +163,19 @@ LinkedList::~LinkedList()
     }
 
 }
+
+// Add movie review method
+void Movie::addReview(float rating, const string& fileComment)
+{
+    reviews.addNodeToHead(rating, fileComment);
+}
+
+
+// Display method
+void Movie::display() const
+{
+    cout << "Movie: " << title << endl;
+    reviews.display();
+    cout << endl;
+}
+
